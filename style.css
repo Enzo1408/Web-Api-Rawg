@@ -1,0 +1,110 @@
+body {
+    background-color: #1e2123;
+}
+
+.fa_custom {
+    text-shadow: none !important;
+    color: white
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 10% auto 10%;
+    grid-template-rows: 60px auto 60px;
+    grid-template-areas: 
+        "logo nav git"
+        ". main ."
+        "footer footer footer";
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.logo {
+    grid-area: logo;
+    color: white;
+    text-align: center;
+}
+
+.search-container {
+    width: 25%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.search-box {
+    position: relative;
+    border-radius: 50px;
+    background-color: #fff;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+.search-box:hover {
+    box-shadow: 5px 5px 6px 1px rgba(255, 255, 255, 0.2);
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 20px 12px 20px;
+    border: none;
+    border-radius: 50px;
+    background-color: #f1f1f1;
+}
+
+.search-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 7px;
+    margin-right: 10px;
+    background: none;
+    color: #000;
+    font-size: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.git {
+    display: flex;
+    justify-content: right;
+    padding-right: 10px;
+
+    grid-area: git;
+    text-decoration: none;
+    
+}
+
+/*Main : Galerie des jeux*/
+.wrapper-gallery {
+    display: grid;
+    place-items: center;
+    grid-area: main;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-areas: 
+        "game1 game2 game3 game4"
+        "game5 game6 game7 game8"
+        "game9 game10 game11 game12"
+        "game13 game14 game15 game16";
+}
+
+.game {
+    margin: 10px;
+    width: 300px;
+    height: 300px;
+    background-color: #393d40;
+    border: 1px solid;
+    border-radius: 1em;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.game:hover {
+    box-shadow: 5px 5px 8px 1px rgba(255, 255, 255, 0.2);
+}
+
+.footer {
+    grid-area: footer;
+    text-align: center;
+    
+}
