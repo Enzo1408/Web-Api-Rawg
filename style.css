@@ -1,16 +1,12 @@
 body {
-    background-color: #1e2123;
-}
-
-.fa_custom {
-    text-shadow: none !important;
-    color: white
+    background-color: #151515;
 }
 
 .wrapper {
+    background-color: #151515;
     display: grid;
     grid-template-columns: 10% auto 10%;
-    grid-template-rows: 60px auto 60px;
+    grid-template-rows: 120px auto 60px;
     grid-template-areas: 
         "logo nav git"
         ". main ."
@@ -23,12 +19,43 @@ body {
     grid-area: logo;
     color: white;
     text-align: center;
+    font-family: "Kanit";
+}
+
+.logo img {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    height: 100px;
+}
+
+.fa_custom {
+    text-shadow: none !important;
+    color: white;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    font-size: 60px;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.git {
+    grid-area: git;
 }
 
 .search-container {
+    grid-area: nav;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 25%;
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
 }
 
 .search-box {
@@ -65,15 +92,6 @@ body {
     cursor: pointer;
 }
 
-.git {
-    display: flex;
-    justify-content: right;
-    padding-right: 10px;
-
-    grid-area: git;
-    text-decoration: none;
-    
-}
 
 /*Main : Galerie des jeux*/
 .wrapper-gallery {
@@ -89,9 +107,12 @@ body {
 }
 
 .game {
+    display: grid;
+    grid-template-rows: 60% 40%;
+    grid-template-areas: "Photo" "Game-Info";
     margin: 10px;
     width: 300px;
-    height: 300px;
+    height: 350px;
     background-color: #393d40;
     border: 1px solid;
     border-radius: 1em;
@@ -99,8 +120,89 @@ body {
     cursor: pointer;
 }
 
+@media (min-width: 1276px) and (max-width: 1700px) {
+    .wrapper-gallery {
+        display: grid;
+        place-items: center;
+        grid-area: main;
+        grid-template-columns: 33% 33% 33%;
+        grid-template-areas: 
+            "game1 game2 game3"
+            "game4 game5 game6"
+            "game7 game8 game9"
+            "game10 game11 game12"
+            "game13 game14 game15"
+            ". game16 .";
+    }
+}
+
+@media (min-width: 826px) and (max-width: 1275px) {
+    .wrapper-gallery {
+        display: grid;
+        place-items: center;
+        grid-area: main;
+        grid-template-columns: 50% 50%;
+        grid-template-areas: 
+            "game1 game2"
+            "game3 game4"
+            "game5 game6"
+            "game7 game8"
+            "game9 game10"
+            "game11 game12"
+            "game13 game14"
+            "game15 game16";
+    }
+}
+
+@media (min-width: 375px) and (max-width: 825px) {
+    .wrapper-gallery {
+        display: grid;
+        place-items: center;
+        grid-area: main;
+        grid-template-columns: 100%;
+        grid-template-areas:
+        "game1"
+        "game2"
+        "game3"
+        "game4"
+        "game5"
+        "game6"
+        "game7"
+        "game8"
+        "game9"
+        "game10"
+        "game11"
+        "game12"
+        "game13"
+        "game14"
+        "game15"
+        "game16";
+    }
+    .logo img {
+        height: 60px;
+    }
+    .game {
+        margin: 10px 0px 10px 0px;
+    }
+    .search-container {
+        width: 60%;
+    }
+}
+
+
 .game:hover {
-    box-shadow: 5px 5px 8px 1px rgba(255, 255, 255, 0.2);
+    transform: scale(1.03);
+}
+
+.game_photo {
+    grid-area: Photo;
+}
+
+.game_info {
+    grid-area: Game-Info;
+    background-color: #202020;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
 }
 
 .footer {
