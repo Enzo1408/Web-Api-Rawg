@@ -17,9 +17,9 @@ body {
 
 .logo {
     grid-area: logo;
-    color: white;
-    text-align: center;
-    font-family: "Kanit";
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo img {
@@ -44,22 +44,27 @@ body {
     display: inline-block;
 }
 
+.fa-custom2 {
+    color: white;
+    font-size: 20px;
+}
+
 .git {
     grid-area: git;
 }
 
 .search-container {
     grid-area: nav;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 25%;
-    margin: 0 auto;
-    text-align: left;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 .search-box {
     position: relative;
+    display: inline-block;
+    width: 40%;
+    margin-top: 40px;
     border-radius: 50px;
     background-color: #fff;
     overflow: hidden;
@@ -118,6 +123,58 @@ body {
     border-radius: 1em;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
+}
+
+.game_photo {
+    grid-area: Photo;
+}
+
+.game_photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.game_info {
+    grid-area: Game-Info;
+    display: grid;
+    grid-template-rows: 30% 70%;
+    grid-template-areas: "Platforms" "Title";
+    background-color: #202020;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+}
+
+.game_platform {
+    grid-area: Platforms;
+    display: inline-block;
+    text-align: center;
+    padding: 0px 10px 0px 10px;
+}
+
+.game_platform i {
+    display: inline-block;
+    margin: 15px 10px 0px 10px;
+    min-width: 20px;
+}
+
+.game_title {
+    grid-area: Title;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.game_title p{
+    color: white;
+    font-family: "Kanit";
+}
+
+.back_image {
+    object-fit: scale-down;
 }
 
 @media (min-width: 1276px) and (max-width: 1700px) {
@@ -184,25 +241,12 @@ body {
     .game {
         margin: 10px 0px 10px 0px;
     }
-    .search-container {
-        width: 60%;
-    }
+
 }
 
 
 .game:hover {
     transform: scale(1.03);
-}
-
-.game_photo {
-    grid-area: Photo;
-}
-
-.game_info {
-    grid-area: Game-Info;
-    background-color: #202020;
-    border-bottom-left-radius: 1em;
-    border-bottom-right-radius: 1em;
 }
 
 .footer {
