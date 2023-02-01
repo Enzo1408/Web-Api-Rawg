@@ -1,5 +1,11 @@
+@font-face {
+    font-family: 'Kanit';
+    src: url('Kanit-Italic.ttf') format('truetype');
+  }
+
 body {
     background-color: #151515;
+    font-family: 'Kanit', sans-serif;
 }
 
 .wrapper {
@@ -170,7 +176,6 @@ body {
 
 .game_title p{
     color: white;
-    font-family: "Kanit";
 }
 
 .back_image {
