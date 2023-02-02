@@ -1,15 +1,59 @@
 let jsondata_games = {};
+let selectPageId = 0;
+const wrapperGallery = document.querySelector('.wrapper-gallery');
 
-async function catch_list_game() {
-    const response = await fetch('https://api.rawg.io/api/games?key=2a1057a727d346c6bff6246fa3ea781b&page_size=16');
+async function catch_list_game(page) {
+    let response;
+    if (selectPageId == 0) {
+        response = await fetch("https://api.rawg.io/api/games?key=2a1057a727d346c6bff6246fa3ea781b&page_size=16");
+    }
+    else {
+        response = await fetch("https://api.rawg.io/api/games?key=2a1057a727d346c6bff6246fa3ea781b&page_size=16&page=" + page);
+    }
     const data = await response.json();
     jsondata_games = data;
     return data;
 }
 
-catch_list_game().then(() => {
-    const wrapperGallery = document.querySelector('.wrapper-gallery');
+catch_list_game(selectPageId).then(() => {
     console.log(jsondata_games);
+    display_games(wrapperGallery);
+    display_page_selector();
+});
+
+display_page_selector();
+
+function display_page_selector() {
+    // 0 1 2 3 4 ... 120
+    const pageSelector = document.querySelector(".page_select");
+    pageSelector.innerHTML = "";
+
+    const start = Math.max(0, selectPageId - 5);
+    const end = Math.min(selectPageId + 5, 120);
+
+    for (let i = start; i < end; i++) {
+        const btnPage = document.createElement("button");
+        btnPage.innerHTML = i + 1;
+        btnPage.addEventListener("click", function() {
+            selectPageId = i + 1;
+            console.log(selectPageId);
+            catch_list_game(selectPageId).then(() => {
+                display_games(wrapperGallery);
+                console.log("ok");
+                display_page_selector();
+            });
+        });
+        pageSelector.appendChild(btnPage);
+    }
+    if (end < 120){
+        const btnPage = document.createElement("button");
+        btnPage.innerHTML = "...";
+        pageSelector.appendChild(btnPage);
+    }
+    
+}
+
+function display_games(wrapper) {
     for (let i = 1; i <= 16; i++){
         // Injecte des div dans le HTML
         const gameElement = document.createElement('div');
@@ -38,7 +82,7 @@ catch_list_game().then(() => {
         Title.innerHTML = jsondata_games.results[i-1].name;
 
         // Ajouter les nouveaux éléments div à la galerie
-        wrapperGallery.appendChild(gameElement);
+        wrapper.appendChild(gameElement);
         gameElement.appendChild(gameHeader);
         gameElement.appendChild(gameFooter);
         gameFooter.appendChild(gamePlatform);
@@ -46,7 +90,7 @@ catch_list_game().then(() => {
         gameHeader.appendChild(Photo);
         gameTitle.appendChild(Title);
     }
-});
+}
 
 function display_platform (Index_game, parent_div) {
     const platforms = jsondata_games.results[Index_game].parent_platforms;
@@ -76,6 +120,9 @@ function display_platform (Index_game, parent_div) {
         }
         else if (platforms[i].platform.name == "Linux"){
             Platforms.className = 'fab fa-linux fa-custom2';
+        }
+        else if (platforms[i].platform.name == "Web"){
+            Platforms.className = 'fab fa-google fa-custom2';
         }
         parent_div.appendChild(Platforms);
     }
