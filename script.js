@@ -1,5 +1,5 @@
 let jsondata_games = {};
-let selectPageId = 0;
+let selectPageId = 50;
 const wrapperGallery = document.querySelector('.wrapper-gallery');
 
 async function catch_list_game(page) {
@@ -21,7 +21,6 @@ catch_list_game(selectPageId).then(() => {
     display_page_selector();
 });
 
-display_page_selector();
 
 function display_page_selector() {
     // 0 1 2 3 4 ... 120
@@ -37,9 +36,11 @@ function display_page_selector() {
         btnPage.addEventListener("click", function() {
             selectPageId = i + 1;
             console.log(selectPageId);
+            jsondata_games = {};
+            console.log(selectPageId);
             catch_list_game(selectPageId).then(() => {
                 display_games(wrapperGallery);
-                console.log("ok");
+                console.log(jsondata_games);
                 display_page_selector();
             });
         });
@@ -54,6 +55,7 @@ function display_page_selector() {
 }
 
 function display_games(wrapper) {
+    wrapper.innerHTML = "";
     for (let i = 1; i <= 16; i++){
         // Injecte des div dans le HTML
         const gameElement = document.createElement('div');
