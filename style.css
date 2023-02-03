@@ -12,7 +12,7 @@ body {
     background-color: #151515;
     display: grid;
     grid-template-columns: 10% auto 10%;
-    grid-template-rows: 120px auto 60px;
+    grid-template-rows: 120px auto auto 60px;
     grid-template-areas: 
         "logo nav git"
         ". main ."
@@ -24,8 +24,11 @@ body {
 
 .page_select {
     grid-area: page;
-    height: 50px;
+    margin: 20px 0px 10px 0px;
+    padding-bottom: 10px;
     width: 100%;
+    border-top: 1px solid rgb(100, 100, 100);
+    border-bottom: 1px solid rgb(100, 100, 100);
     text-align: center;
 }
 
@@ -133,7 +136,9 @@ body {
         "game1 game2 game3 game4"
         "game5 game6 game7 game8"
         "game9 game10 game11 game12"
-        "game13 game14 game15 game16";
+        "game13 game14 game15 game16"
+        "game17 game18 game19 game20"
+        "game21 game22 game23 game24";
 }
 
 .game {
@@ -214,7 +219,9 @@ body {
             "game7 game8 game9"
             "game10 game11 game12"
             "game13 game14 game15"
-            ". game16 .";
+            "game16 game17 game18"
+            "game19 game20 game21"
+            "game22 game23 game24";
     }
 }
 
@@ -232,7 +239,11 @@ body {
             "game9 game10"
             "game11 game12"
             "game13 game14"
-            "game15 game16";
+            "game15 game16"
+            "game17 game18"
+            "game19 game20"
+            "game21 game22"
+            "game23 game24"
     }
 }
 
@@ -258,13 +269,30 @@ body {
         "game13"
         "game14"
         "game15"
-        "game16";
+        "game16"
+        "game17"
+        "game18"
+        "game19"
+        "game20"
+        "game21"
+        "game22"
+        "game23"
+        "game24";
     }
     .logo img {
         height: 60px;
     }
     .game {
         margin: 10px 0px 10px 0px;
+    }
+    .search-btn {
+        display: none;
+    }
+    .search-box {
+        margin-top: 20px;
+    }
+    .search-box input{
+        padding-right: 5px;
     }
 
 }

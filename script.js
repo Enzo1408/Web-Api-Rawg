@@ -1,21 +1,15 @@
 let jsondata_games = {};
-let selectPageId = 50;
+let selectPageId = 0;
 const wrapperGallery = document.querySelector('.wrapper-gallery');
 
-async function catch_list_game(page) {
-    let response;
-    if (selectPageId == 0) {
-        response = await fetch("https://api.rawg.io/api/games?key=2a1057a727d346c6bff6246fa3ea781b&page_size=16");
-    }
-    else {
-        response = await fetch("https://api.rawg.io/api/games?key=2a1057a727d346c6bff6246fa3ea781b&page_size=16&page=" + page);
-    }
+async function catch_list_game() {
+    let response = await fetch("data.json");
     const data = await response.json();
     jsondata_games = data;
     return data;
-}
+} 
 
-catch_list_game(selectPageId).then(() => {
+catch_list_game().then(() => {
     console.log(jsondata_games);
     display_games(wrapperGallery);
     display_page_selector();
@@ -23,52 +17,68 @@ catch_list_game(selectPageId).then(() => {
 
 
 function display_page_selector() {
-    // 0 1 2 3 4 ... 120
     const pageSelector = document.querySelector(".page_select");
     pageSelector.innerHTML = "";
 
-    const start = Math.max(0, selectPageId - 5);
-    const end = Math.min(selectPageId + 5, 120);
+    const start = Math.max(1, selectPageId - 3);
+    const end = Math.min(selectPageId + 5, 99);
 
-    for (let i = start; i < end; i++) {
+    const createButton = (pageNum) => {
         const btnPage = document.createElement("button");
-        btnPage.innerHTML = i + 1;
-        btnPage.addEventListener("click", function() {
-            selectPageId = i + 1;
-            console.log(selectPageId);
-            jsondata_games = {};
-            console.log(selectPageId);
-            catch_list_game(selectPageId).then(() => {
-                display_games(wrapperGallery);
-                console.log(jsondata_games);
-                display_page_selector();
-            });
+        btnPage.innerHTML = pageNum;
+        btnPage.addEventListener("click", () => {
+        selectPageId = pageNum - 1;
+        jsondata_games = {};
+        catch_list_game().then(() => {
+            display_games(wrapperGallery);
+            display_page_selector();
         });
-        pageSelector.appendChild(btnPage);
+    });
+        return btnPage;
     }
-    if (end < 120){
+
+    pageSelector.appendChild(createButton(1));
+    if (start > 1){
         const btnPage = document.createElement("button");
         btnPage.innerHTML = "...";
         pageSelector.appendChild(btnPage);
+    }
+
+    for (let i = start; i < end; i++) {
+        pageSelector.appendChild(createButton(i + 1));
+    }
+
+    if (end < 99) {
+        const btnPage = document.createElement("button");
+        btnPage.innerHTML = "...";
+        pageSelector.appendChild(btnPage);
+        pageSelector.appendChild(createButton(99));
     }
     
 }
 
 function display_games(wrapper) {
     wrapper.innerHTML = "";
-    for (let i = 1; i <= 16; i++){
+    const startIndex = selectPageId * 24;
+    const endIndex = startIndex + 24;
+    const games = jsondata_games.slice(startIndex, endIndex);
+    console.log(games);
+
+    for (let i = 0; i < games.length; i++){
+        const game = games[i];
         // Injecte des div dans le HTML
         const gameElement = document.createElement('div');
         // Ajoute à chaque div la classe .game
         gameElement.classList.add('game');
         // Positionne chaque case dans la grid en utilisant grid-area CSS
-        gameElement.style.gridArea = `game${i}`;
+        gameElement.style.gridArea = `game${i+1}`;
 
         // Ajoute div dans gameElement pour la photo du jeu en question
+        
         const gameHeader = document.createElement('div');
         gameHeader.classList.add('game_photo');
         const Photo = document.createElement('img');
-        Photo.src = jsondata_games.results[i-1].background_image;
+        Photo.src = game.background_image;
 
         // Ajoute div dans gameElement pour les infos du jeu en question
         const gameFooter = document.createElement('div');
@@ -76,12 +86,12 @@ function display_games(wrapper) {
 
         const gamePlatform = document.createElement('div');
         gamePlatform.classList.add('game_platform');
-        display_platform(i-1, gamePlatform);
+        display_platform(i, gamePlatform);
 
         const gameTitle = document.createElement('div');
         gameTitle.classList.add('game_title');
         const Title = document.createElement('p');
-        Title.innerHTML = jsondata_games.results[i-1].name;
+        Title.innerHTML = game.name;
 
         // Ajouter les nouveaux éléments div à la galerie
         wrapper.appendChild(gameElement);
@@ -95,8 +105,15 @@ function display_games(wrapper) {
 }
 
 function display_platform (Index_game, parent_div) {
-    const platforms = jsondata_games.results[Index_game].parent_platforms;
+    const startIndex = selectPageId * 24;
+    const endIndex = startIndex + 24;
+    const games = jsondata_games.slice(startIndex, endIndex);
+
+    const game = games[Index_game];
+
+    const platforms = game.platforms;
     let array_length = platforms.length;
+
     for (let i = 0; i < array_length; i++){
         const Platforms = document.createElement('i');
         if (platforms[i].platform.name == "PC"){
