@@ -15,7 +15,7 @@ body {
     grid-template-rows: 120px auto auto 60px;
     grid-template-areas: 
         "logo nav git"
-        ". main ."
+        "btn main ."
         ". page ."
         "footer footer footer";
     grid-column-gap: 0px;
@@ -52,9 +52,7 @@ body {
 
 .logo img {
     position: absolute;
-    top: 15px;
-    left: 10px;
-    height: 100px;
+    width: 120px;
 }
 
 .fa_custom {
@@ -126,6 +124,33 @@ body {
 }
 
 
+.bouton_arriere {
+    grid-area: btn;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.bouton_arriere button {
+    width: 50px;
+    height: 40px;
+    color: white;
+    background: none;
+    border: 2px solid white;
+    border-radius: 0.5em;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.bouton_arriere button:hover {
+    background: white;
+    color: black;
+}
+
+
 /*Main : Galerie des jeux*/
 .wrapper-gallery {
     display: grid;
@@ -170,8 +195,11 @@ body {
 .game_info {
     grid-area: Game-Info;
     display: grid;
-    grid-template-rows: 30% 70%;
-    grid-template-areas: "Platforms" "Title";
+    grid-template-rows: 35% 65%;
+    grid-template-columns: 65% 35%;
+    grid-template-areas: 
+        "Platforms Rating" 
+        "Title Title";
     background-color: #202020;
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
@@ -186,7 +214,7 @@ body {
 
 .game_platform i {
     display: inline-block;
-    margin: 15px 10px 0px 10px;
+    margin: 15px 5px 0px 5px;
     min-width: 20px;
 }
 
@@ -195,16 +223,119 @@ body {
     display: flex;
     text-align: center;
     justify-content: center;
-    margin: 0px 10px 0px 10px;
+    align-items: center;
+    margin: 0px 10px 20px 10px;
 }
 
-.game_title p{
+.game_title p {
     color: white;
-    font-size: 20px;
+    font-size: 19px;
+}
+
+.rating {
+    grid-area: Rating;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.rating p {
+    font-size: 18px;
+    text-align: center;
+    margin: 0;
+    border-radius: 0.5em;
+    padding: 0px 5px 0px 5px;
 }
 
 .back_image {
     object-fit: scale-down;
+}
+
+
+
+/* FOR GAME ELEMENT PAGE */
+
+.wrapper_game_page {
+    display: grid;
+    grid-area: main;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 300px 60px 300px 100px auto;
+    grid-template-areas: 
+        "W_Title_Game W_Title_Game"
+        "Platforms_Game Average_Game"
+        "Synopsis_Game Video_Game"
+        "Synopsis_Game Developpers_Game"
+        "Carroussel_Game Carroussel_Game";
+}
+
+/* Photo + Title */
+.wrapper_title_game {
+    grid-area: W_Title_Game;
+    display: grid;
+    grid-template-rows: 80% 20%;
+    grid-template-areas:
+        "image_game"
+        "title_game";
+}
+
+.image_game {
+    grid-area: image_game;
+}
+
+.image_game img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.title_game {
+    background-color: #393d40;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+    grid-area: title_game;
+}
+
+.title_game p {
+    color: white;
+    font-size: 40px;
+}
+
+.platforms_game {
+    grid-area: Platforms_Game;
+}
+
+.average_game {
+    grid-area: Average_Game;
+}
+
+.synospsis_game {
+    display: grid;
+    grid-area: Synopsis_Game;
+    grid-template-rows: 70% 30%;
+    grid-template-areas: "Description_Game Types_Game";
+}
+
+.description_game {
+    grid-area: Description_Game;
+}
+
+.types_game {
+    grid-area: Types_Game;
+}
+
+.video_game {
+    grid-area: Video_Game;
+}
+
+.developpers_game {
+    grid-area: Developpers_Game;
+}
+
+.caroussel_game {
+    grid-area: Carroussel_Game;
 }
 
 @media (min-width: 1276px) and (max-width: 1700px) {
@@ -280,7 +411,9 @@ body {
         "game24";
     }
     .logo img {
-        height: 60px;
+        width: 80px;
+        margin-left: 50px;
+        padding-bottom: 40px;
     }
     .game {
         margin: 10px 0px 10px 0px;
