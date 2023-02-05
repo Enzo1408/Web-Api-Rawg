@@ -129,11 +129,74 @@ function display_description(game, parent_div){
     parent_div.appendChild(description_game);
 }
 
+function display_types(game, parent_div) {
+    const types_game = document.createElement('p');
+    let str = "";
+
+    for (let genres of game.genres) {
+        let emoji;
+        if (genres.name == "Action") {
+            emoji = "\u2694\uFE0F";
+        } else if (genres.name == "Adventure") {
+            emoji = "\uD83D\uDC09";
+        } else if (genres.name == "RPG") {
+            emoji = "\uD83E\uDDD9";
+        } else if (genres.name == "Shooter") {
+            emoji = "\uD83C\uDFAF";
+        } else if (genres.name == "Puzzle") {
+            emoji = "\uD83E\uDDE9";
+        } else if (genres.name == "Indie") {
+            emoji = "\uD83D\uDD79\uFE0F";
+        } else if (genres.name == "Sports") {
+            emoji = "\uD83C\uDFC5";
+        } else if (genres.name == "Racing") {
+            emoji = "\uD83C\uDFCE\uFE0F";
+        } else if (genres.name == "Platformer") {
+            emoji = "\u265F\uFE0F";
+        }
+        
+        str = str + emoji + " " + genres.name + " "  + emoji + "<br>";
+    }
+    
+    types_game.innerHTML = str;
+    types_game.style.fontSize = "20px";
+    types_game.style.margin = "5px 0px 5px 0px";
+    parent_div.appendChild(types_game);
+}
+
 function find_the_game_json_infos(id){
     for (let i = 0; i < 2400; i++) {
         if (id == jsondata_infos_games[i].id){
             return i;
         }
+    }
+}
+
+function display_text_stores(game, parent_div){
+    let str = "";
+    for (let store of game.stores){
+        const stores_game = document.createElement('p');
+        const link = document.createElement('a');
+        link.href = "https:/" + store.store.domain;
+        link.target = '_blank';
+        str = store.store.name + " &#8594;";
+        stores_game.innerHTML = str;
+        stores_game.setAttribute("title", link.href);
+        parent_div.appendChild(link);
+        link.appendChild(stores_game);
+    }
+}
+
+function display_text_developers(game, parent_div) {
+    const index = find_the_game_json_infos(game.id);
+    let str = "";
+
+    for (let dev of jsondata_infos_games[index].developers) {
+        const dev_name = document.createElement('p');
+        str = dev.name;
+        dev_name.innerHTML = str;
+        dev_name.classList.add("text_developpers")
+        parent_div.appendChild(dev_name);
     }
 }
 
@@ -201,19 +264,58 @@ function display_info_game(game) {
 
     const descriptionGame = document.createElement("div");
     descriptionGame.classList.add("description_game");
-    display_description(game, descriptionGame);
+    const TitleDescription = document.createElement("div");
+    TitleDescription.classList.add("title_description");
+    TitleDescription.style.fontSize = "25px";
+    const TextTitleDescription = document.createElement('p');
+    TextTitleDescription.innerHTML = "Description";
+    const TextDescription = document.createElement("div");
+    TextDescription.classList.add("text_description");
+    display_description(game, TextDescription);
 
-    const typesGame = document.createElement("div");
-    typesGame.classList.add("types_game");
+    const DevStores = document.createElement("div");
+    DevStores.classList.add("dev_stores");
 
-    synopsisGame.appendChild(descriptionGame);
-    synopsisGame.appendChild(typesGame);
+    const Types = document.createElement("div");
+    Types.classList.add("types_game");
+    const TitleTypes = document.createElement("div");
+    TitleTypes.innerHTML = "Genres \uD83D\uDEA9";
+    TitleTypes.classList.add("title_types");
+    TitleTypes.style.fontSize = "25px";
+    const TextTypes = document.createElement("div");
+    TextTypes.classList.add("text_types");
+    display_types(game, TextTypes);
+
+    const Stores = document.createElement("div");
+    Stores.classList.add("stores");
+    const Dev = document.createElement("div");
+    Dev.classList.add("developers");
+
+    const TitleStores = document.createElement("div");
+    TitleStores.classList.add("title_stores");
+    TitleStores.innerHTML = "Stores \uD83D\uDED2";
+    TitleStores.style.color = "white";
+    TitleStores.style.fontSize = "25px";
+    const TextStores = document.createElement("div");
+    TextStores.classList.add("text_stores");
+    display_text_stores(game, TextStores);
+
+    const TitleDev = document.createElement("div");
+    TitleDev.classList.add("title_developers");
+    TitleDev.innerHTML = "Developers \uD83D\uDC68\uD83C\uDFFB\u200D\uD83D\uDCBB";
+    TitleDev.style.color = "white";
+    TitleDev.style.fontSize = "25px";
+    const TextDev = document.createElement("div");
+    TextDev.classList.add("text_developers");
+    TextDev.classList.add("text_dev");
+    // display TextDev_p.... parent = TextDev
+    display_text_developers(game, TextDev);
+
+
 
     const videoGame = document.createElement("div");
     videoGame.classList.add("video_game");
 
-    const developpersGame = document.createElement("div");
-    developpersGame.classList.add("developpers_game");
 
     const imagesGame = document.createElement("div");
     imagesGame.classList.add("caroussel_game");
@@ -225,8 +327,22 @@ function display_info_game(game) {
     platforms_rate_game.appendChild(averageGame);
     averageGame.appendChild(averageGame_p);
     wrapperGamePage.appendChild(synopsisGame);
+    synopsisGame.appendChild(descriptionGame);
+    descriptionGame.appendChild(TitleDescription);
+    descriptionGame.appendChild(TextTitleDescription);
+    descriptionGame.appendChild(TextDescription);
+    TitleDescription.appendChild(TextTitleDescription);
+    DevStores.appendChild(Types);
+    Types.appendChild(TitleTypes);
+    Types.appendChild(TextTypes);
+    wrapperGamePage.appendChild(DevStores);
+    DevStores.appendChild(Stores);
+    DevStores.appendChild(Dev);
+    Stores.appendChild(TitleStores);
+    Stores.appendChild(TextStores);
+    Dev.appendChild(TitleDev);
+    Dev.appendChild(TextDev);
     wrapperGamePage.appendChild(videoGame);
-    wrapperGamePage.appendChild(developpersGame);
     wrapperGamePage.appendChild(imagesGame);
 
     wrapper_parent.appendChild(wrapperGamePage);
@@ -356,7 +472,8 @@ async function catch_infos_game(){
 
 catch_list_game().then(() => {
     catch_infos_game().then(() => {
-        // console.log(jsondata_infos_games[0].description);
+        console.log(jsondata_infos_games);
+        console.log(jsondata_games);
         display_games(wrapperGallery);
         display_page_selector();
     })

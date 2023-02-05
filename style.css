@@ -8,6 +8,10 @@ body {
     font-family: 'Kanit', sans-serif;
 }
 
+a {
+    text-decoration: none;
+}
+
 .wrapper {
     background-color: #151515;
     display: grid;
@@ -260,12 +264,11 @@ body {
     display: grid;
     grid-area: main;
     grid-template-columns: 50% 50%;
-    grid-template-rows: 300px 60px 300px 100px auto;
+    grid-template-rows: 300px 60px auto 300px;
     grid-template-areas: 
         "W_Title_Game W_Title_Game"
         "Platforms_Rate_Game Platforms_Rate_Game"
-        "Synopsis_Game Video_Game"
-        "Synopsis_Game Developpers_Game"
+        "Synopsis_Game Dev_Stores"
         "Carroussel_Game Carroussel_Game";
 }
 
@@ -346,6 +349,7 @@ body {
 .platforms_game i {
     margin: 8px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
 .platforms_game i:hover {
@@ -388,26 +392,165 @@ body {
     padding: 0px 5px 0px 5px;
 }
 
-.synospsis_game {
+.synopsis_game {
     display: grid;
     grid-area: Synopsis_Game;
-    grid-template-rows: 70% 30%;
-    grid-template-areas: "Description_Game Types_Game";
+    margin: 20px 0px 20px 0px;
 }
 
 .description_game {
     grid-area: Description_Game;
-    text-align: center;
-    background-color: #393d40;
-    border-radius: 1em;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+        "Title_Description"
+        "Text_Description";
+    margin: 10px 10px 10px 0px;
 }
 
-.description_game p {
+.title_description {
+    grid-area: Title_Description;
+    text-align: left;
+    background-color:#202020;
+    border-top-right-radius: 1em;
+    border-top-left-radius: 1em;
+    text-align: center;
+}
+
+.text_description {
+    grid-area: Text_Description;
+    border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 1em;
+    background-color: #393d40;
+    padding: 20px;
+}
+
+.title_description p, .text_description p {
     color: white;
+    margin: 0;
+}
+
+.title_types p, .text_types p {
+    color: white;
+    margin: 0;
+}
+
+
+/* reoitgyheaq^àrtghear$pçtghe$ritghezr$iphgt$qopprhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiqrghio*/
+.dev_stores {
+    grid-area: Dev_Stores;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "Genres"
+        "Stores"
+        "Developers";
+    margin: 20px 0px 20px 0px;
 }
 
 .types_game {
-    grid-area: Types_Game;
+    grid-area: Genres;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+        "Title_Types"
+        "Text_Types";
+    margin: 10px 0px 0px 10px;
+}
+
+.stores {
+    grid-area: Stores;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+        "Title_Stores"
+        "Text_Stores";
+    margin: 10px 0px 0px 10px;
+}
+
+.developers {
+    grid-area: Developers;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+        "Title_Developers"
+        "Text_Developers";
+    margin: 10px 0px 0px 10px;
+}
+
+.title_types {
+    grid-area: Title_Types;
+    background-color: #202020;
+    border-top-right-radius: 1em;
+    border-top-left-radius: 1em;
+    text-align: center;
+    color: white;
+}
+
+.text_types {
+    grid-area: Text_Types;
+    text-align: center;
+    background-color:#393d40;
+    border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 1em;
+    background-color: #393d40;
+}
+
+.title_stores {
+    grid-area: Title_Stores;
+    background-color: #202020;
+    border-top-right-radius: 1em;
+    border-top-left-radius: 1em;
+    text-align: center;
+}
+
+.text_stores {
+    grid-area: Text_Stores;
+    background-color:#393d40;
+    border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    padding: 5px 0px 5px 0px;
+}
+.text_stores p {
+    transition: all 0.2s ease-in-out;
+    font-size: 20px; 
+    color: white; 
+    margin: 0px; 
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.text_stores p:hover {
+    transform: scale(1.03);
+    border-bottom: 1px solid white;
+}
+
+.title_developers {
+    grid-area: Title_Developers;
+    background-color: #202020;
+    border-top-right-radius: 1em;
+    border-top-left-radius: 1em;
+    text-align: center;
+}
+
+
+.text_developers {
+    grid-area: Text_Developers;
+    background-color:#393d40;
+    border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 0px 5px 0px;
+}
+
+.text_developers p {
+    font-size: 20px;
+    color: white;
+    margin: 0;
 }
 
 .video_game {
