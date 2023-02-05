@@ -177,7 +177,7 @@ function display_text_stores(game, parent_div){
     for (let store of game.stores){
         const stores_game = document.createElement('p');
         const link = document.createElement('a');
-        link.href = "https:/" + store.store.domain;
+        link.href = store.store.website;
         link.target = '_blank';
         str = store.store.name + " &#8594;";
         stores_game.innerHTML = str;
@@ -219,7 +219,13 @@ function display_info_game(game) {
     });
 
     const wrapperGamePage = document.createElement("div");
-    wrapperGamePage.classList.add("wrapper_game_page");
+
+    if (window.innerWidth < 826){
+        wrapperGamePage.classList.add("wrapper_game_page_mobile");
+    }
+    else{
+        wrapperGamePage.classList.add("wrapper_game_page");
+    }
 
     const wrapperTitleGame = document.createElement("div");
     wrapperTitleGame.classList.add("wrapper_title_game");
@@ -312,11 +318,6 @@ function display_info_game(game) {
     display_text_developers(game, TextDev);
 
 
-
-    const videoGame = document.createElement("div");
-    videoGame.classList.add("video_game");
-
-
     const imagesGame = document.createElement("div");
     imagesGame.classList.add("caroussel_game");
 
@@ -342,7 +343,6 @@ function display_info_game(game) {
     Stores.appendChild(TextStores);
     Dev.appendChild(TitleDev);
     Dev.appendChild(TextDev);
-    wrapperGamePage.appendChild(videoGame);
     wrapperGamePage.appendChild(imagesGame);
 
     wrapper_parent.appendChild(wrapperGamePage);

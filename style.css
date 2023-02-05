@@ -637,6 +637,39 @@ a {
         "game23"
         "game24";
     }
+
+    div {
+        margin: 0;
+        padding: 0;
+    }
+
+    .wrapper_game_page_mobile {
+        display: grid;
+        grid-area: main;
+        grid-template-rows: 300px 60px auto auto 300px;
+        grid-template-areas: 
+            "W_Title_Game"
+            "Platforms_Rate_Game"
+            "Dev_Stores"
+            "Synopsis_Game"
+            "Carroussel_Game";
+    }
+
+    /* Photo + Titre */
+    .wrapper_title_game {
+        grid-area: W_Title_Game;
+        display: grid;
+        grid-template-rows: 100%;
+        grid-template-areas:
+        "div_title";
+        position: relative;
+        text-align: center;
+    }
+
+    .title_game p {
+        font-size: 20px;
+    }
+
     .logo img {
         width: 80px;
         margin-left: 50px;
