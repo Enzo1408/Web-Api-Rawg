@@ -1,4 +1,5 @@
 let jsondata_games = {};
+let jsondata_infos_games = {};
 let selectPageId = 0;
 const wrapper_parent = document.querySelector('.wrapper');
 const wrapperGallery = document.querySelector('.wrapper-gallery');
@@ -26,27 +27,55 @@ function calculate_rating (game){
     return Math.floor(average/totalCount);
 }
 
-function display_rating_color(rating){
-    if (rating.innerHTML < 50){
-        rating.style.color = "red";
-        rating.style.border = "2px solid red";
+function display_rating_color(rating, score){
+    let color, border;
+    if (score < 50){
+        color = "red";
+        border = "2px solid red";
     }
-    else if (rating.innerHTML < 80 && rating.innerHTML >= 50){
-        rating.style.color = "yellow";
-        rating.style.border = "2px solid yellow";
+    else if (score < 80 && score >= 50){
+        color = "yellow";
+        border = "2px solid yellow";
     }
-    else if (rating.innerHTML >= 80){
-        rating.style.color = "green";
-        rating.style.border = "2px solid green";
+    else if (score >= 80){
+        color = "green";
+        border = "2px solid green";
     }
+    rating.style.color = color;
+    rating.style.border = border;
 }
 
-async function catch_list_game() {
-    let response = await fetch("data.json");
-    const data = await response.json();
-    jsondata_games = data;
-    return data;
-} 
+function display_all_rates (game, parent_div){
+    let fontsize = window.innerWidth > 1200 ? 20 : 15;
+
+    let exceptionnal = document.createElement('p');
+    let good = document.createElement('p');
+    let notgood = document.createElement('p');
+    let worst = document.createElement('p');
+
+    for (let rate of game.rating) {
+        if (rate.id == 5) {
+            exceptionnal.textContent = "\u{1F451} " + rate.percent + '%';
+            exceptionnal.style.fontSize = fontsize + "px";
+        }
+        if (rate.id == 4) {
+            good.textContent = "\u{1F44D} " + rate.percent + '%';
+            good.style.fontSize = fontsize + "px";          
+        }
+        if (rate.id == 3) {
+            notgood.textContent = "\u{1F44E} " + rate.percent + '%';
+            notgood.style.fontSize = fontsize + "px";
+        }
+        if (rate.id == 1) {
+            worst.textContent = "\u{1F6D1} " + rate.percent + '%';
+            worst.style.fontSize = fontsize + "px";
+        }
+        parent_div.appendChild(exceptionnal);
+        parent_div.appendChild(good);
+        parent_div.appendChild(notgood);
+        parent_div.appendChild(worst);
+    }
+}
 
 
 function display_page_selector() {
@@ -88,6 +117,23 @@ function display_page_selector() {
         btnPage.innerHTML = "...";
         pageSelector.appendChild(btnPage);
         pageSelector.appendChild(createButton(99));
+    }
+}
+
+function display_description(game, parent_div){
+    const index = find_the_game_json_infos(game.id);
+
+    const description_game = document.createElement('p');
+    description_game.innerHTML = jsondata_infos_games[index].description;
+
+    parent_div.appendChild(description_game);
+}
+
+function find_the_game_json_infos(id){
+    for (let i = 0; i < 2400; i++) {
+        if (id == jsondata_infos_games[i].id){
+            return i;
+        }
     }
 }
 
@@ -133,18 +179,29 @@ function display_info_game(game) {
     wrapperTitleGame.appendChild(imageGame);
     wrapperTitleGame.appendChild(titleGame);
 
+    const platforms_rate_game = document.createElement('div');
+    platforms_rate_game.classList.add('platforms_rate_game');
+
     const platformsGame = document.createElement("div");
     platformsGame.classList.add("platforms_game");
     display_platforms_of_one_game(game, platformsGame);
 
+    const all_rates = document.createElement('div');
+    all_rates.classList.add('rates_game');
+    display_all_rates (game, all_rates);
+
     const averageGame = document.createElement("div");
     averageGame.classList.add("average_game");
+    const averageGame_p = document.createElement('p');
+    averageGame_p.innerHTML = calculate_rating(game) + "/100";
+    display_rating_color(averageGame_p, calculate_rating(game));
 
     const synopsisGame = document.createElement("div");
     synopsisGame.classList.add("synopsis_game");
 
     const descriptionGame = document.createElement("div");
     descriptionGame.classList.add("description_game");
+    display_description(game, descriptionGame);
 
     const typesGame = document.createElement("div");
     typesGame.classList.add("types_game");
@@ -162,8 +219,11 @@ function display_info_game(game) {
     imagesGame.classList.add("caroussel_game");
 
     wrapperGamePage.appendChild(wrapperTitleGame);
-    wrapperGamePage.appendChild(platformsGame);
-    wrapperGamePage.appendChild(averageGame);
+    wrapperGamePage.appendChild(platforms_rate_game);
+    platforms_rate_game.appendChild(platformsGame);
+    platforms_rate_game.appendChild(all_rates);
+    platforms_rate_game.appendChild(averageGame);
+    averageGame.appendChild(averageGame_p);
     wrapperGamePage.appendChild(synopsisGame);
     wrapperGamePage.appendChild(videoGame);
     wrapperGamePage.appendChild(developpersGame);
@@ -177,7 +237,7 @@ function display_games(wrapper) {
     const startIndex = selectPageId * 24;
     const endIndex = startIndex + 24;
     const games = jsondata_games.slice(startIndex, endIndex);
-    console.log(games);
+    // console.log(games);
 
     for (let i = 0; i < games.length; i++){
         const game = games[i];
@@ -218,7 +278,7 @@ function display_games(wrapper) {
         gameRating.classList.add('rating');
         const rating = document.createElement('p');
         rating.innerHTML = calculate_rating(game);
-        display_rating_color(rating);
+        display_rating_color(rating, calculate_rating(game));
 
         // Ajouter les nouveaux éléments div à la galerie
         wrapper.appendChild(gameElement);
@@ -278,11 +338,30 @@ function display_platforms_of_one_game(game, parent_div) {
     }
 }
 
+
+async function catch_list_game() {
+    let response = await fetch("data.json");
+    const data = await response.json();
+    jsondata_games = data;
+    return data;
+}
+
+async function catch_infos_game(){
+    let response = await fetch("stores_data.json");
+    const data = await response.json();
+    jsondata_infos_games = data;
+    return data;
+}
+
+
 catch_list_game().then(() => {
-    console.log(jsondata_games);
-    display_games(wrapperGallery);
-    display_page_selector();
+    catch_infos_game().then(() => {
+        // console.log(jsondata_infos_games[0].description);
+        display_games(wrapperGallery);
+        display_page_selector();
+    })
 });
+
 
 window.addEventListener("popstate", (event) => {
     var page = event.state && event.state.page ? event.state.page : 1;
