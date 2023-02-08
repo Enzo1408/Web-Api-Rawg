@@ -1,9 +1,11 @@
 let jsondata_games = {};
 let jsondata_infos_games = {};
 let selectPageId = 0;
+let state = 0; // 0 for home, 1 for game infos
 const wrapper_parent = document.querySelector('.wrapper');
 const wrapperGallery = document.querySelector('.wrapper-gallery');
 const wrapperPageSelector = document.querySelector('.page_select');
+
 
 
 function calculate_rating (game){
@@ -78,25 +80,25 @@ function display_all_rates (game, parent_div){
 }
 
 
-function display_page_selector() {
+function display_page_selector(Page) {
     const pageSelector = document.querySelector(".page_select");
-    pageSelector.innerHTML = "";
+    // pageSelector.innerHTML = "";
 
-    const start = Math.max(1, selectPageId - 3);
-    const end = Math.min(selectPageId + 5, 99);
+    const start = Math.max(1, Page - 3);
+    const end = Math.min(Page + 5, 99);
 
     const createButton = (pageNum) => {
         const btnPage = document.createElement("button");
         btnPage.innerHTML = pageNum;
-        if (pageNum === selectPageId + 1) {
+        if (pageNum === Page + 1) {
             btnPage.style.borderBottom = "2px solid white";
         }
         btnPage.addEventListener("click", () => {
-            selectPageId = pageNum - 1;
-            display_games(wrapperGallery);
-            display_page_selector();
-            console.log(selectPageId);
-            history.pushState({ page: selectPageId + 1 }, `Page ${selectPageId + 1}`, `#page-${selectPageId + 1}`);
+            Page = pageNum - 1;
+            delete_wrapperGallery_pageSelector(wrapper_parent);
+            recreate_wrapperGallery_pageSelector(Page + 1);
+            console.log("Page = " + (Page + 1) + ", State = 0");
+            history.pushState({ page: Page + 1, x: 0 }, `Page ${Page + 1}`, `#page-${Page + 1}`);
         });
         return btnPage;
     }
@@ -177,7 +179,7 @@ function display_text_stores(game, parent_div){
     for (let store of game.stores){
         const stores_game = document.createElement('p');
         const link = document.createElement('a');
-        link.href = store.store.website;
+        link.href = "https://" + store.store.domain;
         link.target = '_blank';
         str = store.store.name + " &#8594;";
         stores_game.innerHTML = str;
@@ -202,22 +204,6 @@ function display_text_developers(game, parent_div) {
 
 
 function display_info_game(game) {
-    const backButtonWrapper = document.createElement('div');
-    backButtonWrapper.classList.add("bouton_arriere");
-    const backButton = document.createElement('button');
-    backButton.innerHTML = "<";
-    wrapper_parent.appendChild(backButtonWrapper);
-    backButtonWrapper.appendChild(backButton);
-    backButton.addEventListener('click', function(){
-        wrapperPageSelector.innerHTML = "";
-        wrapperPageSelector.style.display = "";
-        wrapperGallery.style.display = "";
-        wrapper_parent.removeChild(wrapperGamePage);
-        wrapper_parent.removeChild(backButtonWrapper);
-        display_games(wrapperGallery);
-        display_page_selector();
-    });
-
     const wrapperGamePage = document.createElement("div");
 
     if (window.innerWidth < 826){
@@ -348,12 +334,12 @@ function display_info_game(game) {
     wrapper_parent.appendChild(wrapperGamePage);
 }
 
-function display_games(wrapper) {
-    wrapper.innerHTML = "";
-    const startIndex = selectPageId * 24;
+function display_games(wrapper, page) {
+    // wrapper.innerHTML = "";
+    const startIndex = page * 24;
     const endIndex = startIndex + 24;
     const games = jsondata_games.slice(startIndex, endIndex);
-    // console.log(games);
+    console.log(games);
 
     for (let i = 0; i < games.length; i++){
         const game = games[i];
@@ -365,8 +351,9 @@ function display_games(wrapper) {
         gameElement.style.gridArea = `game${i+1}`;
 
         gameElement.addEventListener('click', function(){
-            wrapperPageSelector.style.display = "none";
-            wrapperGallery.style.display = "none";
+            delete_wrapperGallery_pageSelector(wrapper_parent);
+            history.pushState({ page: -1, x: 1, g: game}, '', '');
+            console.log("page = -1, x = 1");
             display_info_game(game);
         });
 
@@ -383,7 +370,7 @@ function display_games(wrapper) {
 
         const gamePlatform = document.createElement('div');
         gamePlatform.classList.add('game_platform');
-        display_all_platforms(i, gamePlatform);
+        display_all_platforms(i, gamePlatform, page);
 
         const gameTitle = document.createElement('div');
         gameTitle.classList.add('game_title');
@@ -409,8 +396,8 @@ function display_games(wrapper) {
     }
 }
 
-function display_all_platforms (Index_game, parent_div) {
-    const startIndex = selectPageId * 24;
+function display_all_platforms (Index_game, parent_div, page) {
+    const startIndex = page * 24;
     const endIndex = startIndex + 24;
     const games = jsondata_games.slice(startIndex, endIndex);
     const game = games[Index_game];
@@ -454,6 +441,37 @@ function display_platforms_of_one_game(game, parent_div) {
     }
 }
 
+function delete_wrapperGallery_pageSelector(parent_div) {
+    const gallery = document.querySelector('.wrapper-gallery');
+    const pageSel = document.querySelector('.page_select');
+    parent_div.removeChild(gallery);
+    parent_div.removeChild(pageSel);
+}
+
+function recreate_wrapperGallery_pageSelector(page) {
+    const wrapperGallery = document.createElement('div');
+    wrapperGallery.classList.add("wrapper-gallery");
+    wrapper_parent.appendChild(wrapperGallery);
+
+    const pageSel = document.createElement('div');
+    pageSel.classList.add("page_select");
+    wrapper_parent.appendChild(pageSel);
+
+    console.log("PAGE AFFICHE = " + page);
+
+    display_games(wrapperGallery, page - 1);
+    display_page_selector(page - 1);
+}
+
+function delete_game_info() {
+    const infos = document.querySelector('.wrapper_game_page');
+    wrapper_parent.removeChild(infos);
+}
+
+function recreate_game_info(game) {
+    display_info_game(game);
+}
+
 
 async function catch_list_game() {
     let response = await fetch("data.json");
@@ -474,18 +492,65 @@ catch_list_game().then(() => {
     catch_infos_game().then(() => {
         console.log(jsondata_infos_games);
         console.log(jsondata_games);
-        display_games(wrapperGallery);
-        display_page_selector();
+        history.pushState({page: 1, x: 0}, '', '');
+        console.log("page = 1, x = 0");
+        display_games(wrapperGallery, 0);
+        display_page_selector(0);
     })
 });
 
 
 window.addEventListener("popstate", (event) => {
-    var page = event.state && event.state.page ? event.state.page : 1;
-    console.log(page);
-    selectPageId = page - 1;
-    wrapperGallery.style.display = "";
-    wrapperPageSelector.style.display = "";
-    display_games(wrapperGallery);
-    display_page_selector();
+    var page = event.state ? event.state.page : undefined;
+    var x = event.state ? event.state.x : undefined;
+    var g = event.state ? event.state.g : undefined;
+    console.log("page = " + page + "state = " + x);
+    const GamePage = document.querySelector('.wrapper_game_page');
+    const ButtonBack = document.querySelector('.bouton_arriere');
+    const gallery = document.querySelector('.wrapper-gallery');
+    const selector = document.querySelector('.page_select');
+    if (x == 1) {
+        if (GamePage && ButtonBack){
+            delete_wrapperGallery_pageSelector(wrapper_parent);
+            delete_game_info();
+            recreate_game_info(g);
+        }
+        else {
+            delete_wrapperGallery_pageSelector(wrapper_parent);
+            recreate_game_info(g);
+        }
+    }
+    if (x == 0) {
+        if (gallery && selector){
+            delete_wrapperGallery_pageSelector(wrapper_parent);
+            recreate_wrapperGallery_pageSelector(page);
+        }
+        else {
+            delete_game_info();
+            recreate_wrapperGallery_pageSelector(page);
+        }
+    }
 });
+
+
+
+
+
+/* if (state == 1){
+        wrapperGallery.style.display = "none";
+        wrapperPageSelector.style.display = "none";
+        state = 0;
+    }
+    if (state == 0) {
+        var page = event.state && event.state.page ? event.state.page : 1;
+        console.log(page, "ok");
+        selectPageId = page - 1;
+        const wrapperGamePage_ = document.querySelector('.wrapper_game_page');
+        const wrapperButtonBack = document.querySelector('.bouton_arriere');
+        wrapperGallery.style.display = "";
+        wrapperPageSelector.style.display = "";
+        wrapper_parent.removeChild(wrapperGamePage_);
+        wrapper_parent.removeChild(wrapperButtonBack);
+        display_games(wrapperGallery);
+        display_page_selector();
+    } */
