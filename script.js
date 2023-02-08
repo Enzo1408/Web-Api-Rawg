@@ -6,6 +6,7 @@ const wrapper_parent = document.querySelector('.wrapper');
 const wrapperGallery = document.querySelector('.wrapper-gallery');
 const wrapperPageSelector = document.querySelector('.page_select');
 const logo = document.getElementById('logo');
+let wrapperGameInfoPage;
 
 
 logo.addEventListener('click', function() {
@@ -212,13 +213,13 @@ function display_text_developers(game, parent_div) {
 
 
 function display_info_game(game) {
-    const wrapperGamePage = document.createElement("div");
+    wrapperGameInfoPage = document.createElement("div");
 
     if (window.innerWidth < 826){
-        wrapperGamePage.classList.add("wrapper_game_page_mobile");
+        wrapperGameInfoPage.classList.add("wrapper_game_page_mobile");
     }
     else{
-        wrapperGamePage.classList.add("wrapper_game_page");
+        wrapperGameInfoPage.classList.add("wrapper_game_page");
     }
 
     const wrapperTitleGame = document.createElement("div");
@@ -315,13 +316,13 @@ function display_info_game(game) {
     const imagesGame = document.createElement("div");
     imagesGame.classList.add("caroussel_game");
 
-    wrapperGamePage.appendChild(wrapperTitleGame);
-    wrapperGamePage.appendChild(platforms_rate_game);
+    wrapperGameInfoPage.appendChild(wrapperTitleGame);
+    wrapperGameInfoPage.appendChild(platforms_rate_game);
     platforms_rate_game.appendChild(platformsGame);
     platforms_rate_game.appendChild(all_rates);
     platforms_rate_game.appendChild(averageGame);
     averageGame.appendChild(averageGame_p);
-    wrapperGamePage.appendChild(synopsisGame);
+    wrapperGameInfoPage.appendChild(synopsisGame);
     synopsisGame.appendChild(descriptionGame);
     descriptionGame.appendChild(TitleDescription);
     descriptionGame.appendChild(TextTitleDescription);
@@ -330,16 +331,16 @@ function display_info_game(game) {
     DevStores.appendChild(Types);
     Types.appendChild(TitleTypes);
     Types.appendChild(TextTypes);
-    wrapperGamePage.appendChild(DevStores);
+    wrapperGameInfoPage.appendChild(DevStores);
     DevStores.appendChild(Stores);
     DevStores.appendChild(Dev);
     Stores.appendChild(TitleStores);
     Stores.appendChild(TextStores);
     Dev.appendChild(TitleDev);
     Dev.appendChild(TextDev);
-    wrapperGamePage.appendChild(imagesGame);
+    wrapperGameInfoPage.appendChild(imagesGame);
 
-    wrapper_parent.appendChild(wrapperGamePage);
+    wrapper_parent.appendChild(wrapperGameInfoPage);
 }
 
 /* function low_resolution(url) {
@@ -473,10 +474,11 @@ function display_platforms_of_one_game(game, parent_div) {
 }
 
 function delete_wrapperGallery_pageSelector(parent_div) {
+    const wrapper_parent = document.querySelector('.wrapper');
     const gallery = document.querySelector('.wrapper-gallery');
     const pageSel = document.querySelector('.page_select');
-    parent_div.removeChild(gallery);
-    parent_div.removeChild(pageSel);
+    wrapper_parent.removeChild(gallery);
+    wrapper_parent.removeChild(pageSel);
 }
 
 function recreate_wrapperGallery_pageSelector(page) {
@@ -496,8 +498,7 @@ function recreate_wrapperGallery_pageSelector(page) {
 }
 
 function delete_game_info() {
-    const infos = document.querySelector('.wrapper_game_page');
-    wrapper_parent.removeChild(infos);
+    wrapper_parent.removeChild(wrapperGameInfoPage);
 }
 
 function recreate_game_info(game) {
