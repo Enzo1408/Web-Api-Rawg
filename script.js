@@ -342,6 +342,23 @@ function display_info_game(game) {
     wrapper_parent.appendChild(wrapperGamePage);
 }
 
+/* function low_resolution(url) {
+    return new Promise((resolve, reject) => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.src = url;
+        canvas.width = img.width / 2;
+        canvas.height = img.height / 2;
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            console.log(canvas.toDataURL("image/jpeg", 0.5));
+            resolve(canvas.toDataURL("image/jpeg", 0.5));
+        };
+        img.onerror = reject;
+    });
+} */
+
 function display_games(wrapper, page) {
     // wrapper.innerHTML = "";
     const startIndex = page * 24;
@@ -369,7 +386,13 @@ function display_games(wrapper, page) {
         
         const gameHeader = document.createElement('div');
         gameHeader.classList.add('game_photo');
+        console.log(game.background_image);
         const Photo = document.createElement('img');
+        /* low_resolution(game.background_image).then(dataUrl => {
+            Photo.src = dataUrl;
+        }).catch(error => {
+            console.error(error);
+        }); */
         Photo.src = game.background_image;
 
         // Ajoute div dans gameElement pour les infos du jeu en question
