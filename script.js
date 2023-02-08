@@ -103,7 +103,7 @@ function display_page_selector(Page) {
             delete_wrapperGallery_pageSelector(wrapper_parent);
             recreate_wrapperGallery_pageSelector(Page + 1);
             console.log("Page = " + (Page + 1) + ", State = 0");
-            history.pushState({ page: Page + 1, x: 0 }, `Page ${Page + 1}`, `#page-${Page + 1}`);
+            history.pushState({ page: Page + 1, x: 0 }, '', `#page-${Page + 1}`);
         });
         return btnPage;
     }
