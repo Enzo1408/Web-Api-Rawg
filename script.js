@@ -5,7 +5,12 @@ let state = 0; // 0 for home, 1 for game infos
 const wrapper_parent = document.querySelector('.wrapper');
 const wrapperGallery = document.querySelector('.wrapper-gallery');
 const wrapperPageSelector = document.querySelector('.page_select');
+const logo = document.getElementById('logo');
 
+
+logo.addEventListener('click', function() {
+    window.location.reload();
+})
 
 
 function calculate_rating (game){
@@ -502,6 +507,8 @@ catch_list_game().then(() => {
         display_page_selector(0);
     })
 });
+
+
 
 
 window.addEventListener("popstate", (event) => {
