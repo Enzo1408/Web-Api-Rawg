@@ -339,6 +339,7 @@ a {
 
 .platforms_game {
     grid-area: Platforms_Game;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -646,13 +647,53 @@ a {
     .wrapper_game_page_mobile {
         display: grid;
         grid-area: main;
-        grid-template-rows: 300px 60px auto auto 300px;
+        grid-template-rows: 300px auto auto auto 300px;
         grid-template-areas: 
             "W_Title_Game"
             "Platforms_Rate_Game"
             "Dev_Stores"
             "Synopsis_Game"
             "Carroussel_Game";
+    }
+
+    .platforms_rate_game {
+        grid-area: Platforms_Rate_Game;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: auto auto auto;
+        grid-template-areas: "Platforms_Game" "Rates_Game" "Average_Game";
+    }
+
+    .platforms_game {
+        border-bottom-left-radius: 0em;
+        padding: 5px 0px 5px 0px;
+        border-bottom: 1px solid black;
+    }
+
+    .rates_game {
+        padding: 8px 0px 8px 0px;
+        border-bottom: 1px solid black;
+    }
+
+    .average_game {
+        border-bottom-left-radius: 1em;
+        padding: 8px 0px 8px 0px;
+    }
+
+    .types_game {
+        margin: 10px 0px 10px 0px;
+    }
+
+    .stores {
+        margin: 10px 0px 10px 0px;
+    }
+
+    .developers{
+        margin: 10px 0px 10px 0px;
+    }
+
+    .description_game {
+        margin: 0;
     }
 
     /* Photo + Titre */

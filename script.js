@@ -156,10 +156,13 @@ function display_types(game, parent_div) {
         } else if (genres.name == "Platformer") {
             emoji = "\u265F\uFE0F";
         }
-        
-        str = str + emoji + " " + genres.name + " "  + emoji + "<br>";
+        if (emoji) {
+            str = str + emoji + " " + genres.name + " "  + emoji + "<br>";
+        }
+        else {
+            str = str + " " + genres.name + " " + "<br>";
+        }
     }
-    
     types_game.innerHTML = str;
     types_game.style.fontSize = "20px";
     types_game.style.margin = "5px 0px 5px 0px";
@@ -457,7 +460,8 @@ function recreate_wrapperGallery_pageSelector(page) {
     pageSel.classList.add("page_select");
     wrapper_parent.appendChild(pageSel);
 
-    console.log("PAGE AFFICHE = " + page);
+    /* console.log("PAGE AFFICHE = " + page); */
+    window.scrollTo(0, 0);
 
     display_games(wrapperGallery, page - 1);
     display_page_selector(page - 1);
