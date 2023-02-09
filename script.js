@@ -104,7 +104,7 @@ function display_page_selector(Page) {
             delete_wrapperGallery_pageSelector(wrapper_parent);
             recreate_wrapperGallery_pageSelector(Page + 1);
             console.log("Page = " + (Page + 1) + ", State = 0");
-            history.pushState({ page: Page + 1, x: 0 }, '', `#page-${Page + 1}`);
+            history.pushState({ page: Page + 1, x: 0 }, '', ``);
         });
         return btnPage;
     }
@@ -274,6 +274,8 @@ function display_info_game(game) {
     TextDescription.classList.add("text_description");
     display_description(game, TextDescription);
 
+    const wrapdevstores = document.createElement("div");
+
     const DevStores = document.createElement("div");
     DevStores.classList.add("dev_stores");
 
@@ -322,7 +324,9 @@ function display_info_game(game) {
     platforms_rate_game.appendChild(all_rates);
     platforms_rate_game.appendChild(averageGame);
     averageGame.appendChild(averageGame_p);
+    wrapperGameInfoPage.appendChild(wrapdevstores);
     wrapperGameInfoPage.appendChild(synopsisGame);
+    wrapdevstores.appendChild(DevStores);
     synopsisGame.appendChild(descriptionGame);
     descriptionGame.appendChild(TitleDescription);
     descriptionGame.appendChild(TextTitleDescription);
@@ -331,7 +335,6 @@ function display_info_game(game) {
     DevStores.appendChild(Types);
     Types.appendChild(TitleTypes);
     Types.appendChild(TextTypes);
-    wrapperGameInfoPage.appendChild(DevStores);
     DevStores.appendChild(Stores);
     DevStores.appendChild(Dev);
     Stores.appendChild(TitleStores);
@@ -571,25 +574,49 @@ window.addEventListener("popstate", (event) => {
     }
 });
 
+const options = {
+    includeScore: true,
+    isCaseSensitive: false,
+    shouldSort: true,
+    // Search in `author` and in `tags` array
+    keys: ['name']
+}
 
+function doesMatch(searchTerm) {
+    const fuse = new Fuse(jsondata_games, options);
 
+    const result = fuse.search(searchTerm);
+    return result;
+}
 
+const searchInput = document.querySelector('input[type="input"]');
 
-/* if (state == 1){
-        wrapperGallery.style.display = "none";
-        wrapperPageSelector.style.display = "none";
-        state = 0;
+searchInput.addEventListener("input", function(e) {
+    // Récupérer la valeur saisie par l'utilisateur
+    const searchTerm = e.target.value;
+
+    // Si la valeur saisie est vide, ne rien faire
+    if (!searchTerm) return;
+
+    let results = doesMatch(searchTerm);
+
+    a = document.getElementsByTagName("a");
+    for (i = 0; i < a.length - 1; i++) {
+        const actual = document.getElementById(i);
+        actual.style.display = "none";
+        actual.style.borderBottom = "1px solid #f7f7f7";
+        actual.style.cursor = "pointer";
+        actual.style.padding = "4px 0px 4px 0px"
+        actual.addEventListener("click", function() {
+            console.log(actual.value);
+        })
+        if (searchTerm.length > 1) {
+            actual.style.display = "block";
+        } 
+        else {
+            actual.style.display = "none";
+        }
+        actual.innerHTML = results[i].item.name;
     }
-    if (state == 0) {
-        var page = event.state && event.state.page ? event.state.page : 1;
-        console.log(page, "ok");
-        selectPageId = page - 1;
-        const wrapperGamePage_ = document.querySelector('.wrapper_game_page');
-        const wrapperButtonBack = document.querySelector('.bouton_arriere');
-        wrapperGallery.style.display = "";
-        wrapperPageSelector.style.display = "";
-        wrapper_parent.removeChild(wrapperGamePage_);
-        wrapper_parent.removeChild(wrapperButtonBack);
-        display_games(wrapperGallery);
-        display_page_selector();
-    } */
+});
+
