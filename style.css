@@ -65,7 +65,7 @@ a {
     position: absolute;
     top: 15px;
     right: 10px;
-    font-size: 60px;
+    font-size: 50px;
     width: 60px;
     height: 60px;
     line-height: 60px;
@@ -93,7 +93,7 @@ a {
 .search-box {
     position: relative;
     display: inline-block;
-    width: 40%;
+    width: 50%;
     margin-top: 40px;
     border-radius: 1em;
     background-color: #fff;
@@ -118,11 +118,11 @@ a {
 }
 
 .search-box input {
-    width: 100%;
-    padding: 12px 20px 12px 20px;
+    width: 90%;
+    height: 100%;
+    padding: 12px 10px 12px 10px;
     border: none;
     background-color: #f1f1f1;
-    font-size-adjust: none;
 }
 
 .search-btn {
@@ -719,21 +719,19 @@ a {
     }
 
     .logo img {
-        width: 80px;
-        margin-left: 50px;
+        width: 70px;
+        margin-left: 40px;
         padding-bottom: 40px;
     }
     .game {
         margin: 10px 0px 10px 0px;
     }
-    .search-btn {
-        display: none;
-    }
+    
     .search-box {
         margin-top: 20px;
     }
     .search-box input{
-        padding-right: 5px;
+        font-size: 17px;
     }
 
     .title_game p {
