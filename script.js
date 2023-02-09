@@ -362,10 +362,10 @@ function display_info_game(game) {
 
 function display_games(wrapper, page) {
     // wrapper.innerHTML = "";
+    // console.log(jsondata_games);
     const startIndex = page * 24;
     const endIndex = startIndex + 24;
     const games = jsondata_games.slice(startIndex, endIndex);
-    console.log(games);
 
     for (let i = 0; i < games.length; i++){
         const game = games[i];
@@ -387,7 +387,6 @@ function display_games(wrapper, page) {
         
         const gameHeader = document.createElement('div');
         gameHeader.classList.add('game_photo');
-        console.log(game.background_image);
         const Photo = document.createElement('img');
         /* low_resolution(game.background_image).then(dataUrl => {
             Photo.src = dataUrl;
@@ -506,8 +505,8 @@ function recreate_game_info(game) {
 }
 
 
-async function catch_list_game() {
-    let response = await fetch("data.json");
+async function catch_list_first_games() {
+    let response = await fetch("24_first_data.json");
     const data = await response.json();
     jsondata_games = data;
     return data;
@@ -520,24 +519,33 @@ async function catch_infos_game(){
     return data;
 }
 
+async function catch_the_rest() {
+    let response = await fetch("data.json");
+    const data = await response.json();
+    jsondata_games = jsondata_games.concat(data);
+    return data;
+}
 
-catch_list_game().then(() => {
-    catch_infos_game().then(() => {
-        console.log(jsondata_infos_games);
-        console.log(jsondata_games);
-        history.pushState({page: 1, x: 0}, '', '');
-        console.log("page = 1, x = 0");
-        display_games(wrapperGallery, 0);
-        display_page_selector(0);
-    })
+Promise.all([catch_list_first_games(), catch_infos_game()])
+  .then(() => {
+    // console.log(jsondata_infos_games);
+    console.log(jsondata_games);
+    history.pushState({ page: 1, x: 0 }, '', '');
+    display_games(wrapperGallery, 0);
+    display_page_selector(0);
+    return catch_the_rest();
+  })
+  .then(() => {
+    // console.log(jsondata_games);
 });
+
 
 
 window.addEventListener("popstate", (event) => {
     var page = event.state ? event.state.page : undefined;
     var x = event.state ? event.state.x : undefined;
     var g = event.state ? event.state.g : undefined;
-    console.log("page = " + page + "state = " + x);
+    // console.log("page = " + page + "state = " + x);
     const GamePage = document.querySelector('.wrapper_game_page');
     const gallery = document.querySelector('.wrapper-gallery');
     if (x == 1) {
