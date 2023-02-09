@@ -99,12 +99,20 @@ a {
     background-color: #fff;
     overflow: hidden;
     transition: all 0.2s ease-in-out;
+    z-index: 2;
 }
 
 .search-box:hover {
     box-shadow: 5px 5px 6px 1px rgba(255, 255, 255, 0.2);
 }
 
+.search-box a {
+    display: block;
+    border-bottom: 1px solid #f7f7f7;
+    cursor: pointer;
+    padding: 4px 0px 4px 0px;
+    position: relative;
+}
 .search-box a:hover {
     background-color: #f7f7f7;
 }
@@ -114,6 +122,7 @@ a {
     padding: 12px 20px 12px 20px;
     border: none;
     background-color: #f1f1f1;
+    font-size-adjust: none;
 }
 
 .search-btn {
@@ -403,7 +412,7 @@ a {
     grid-template-areas: 
         "Title_Description"
         "Text_Description";
-    margin: 30px 20px 30px 0px;
+    margin: 30px 0px 30px 20px;
 }
 
 .title_description {
@@ -440,7 +449,7 @@ a {
         "Genres"
         "Stores"
         "Developers";
-    margin: 30px 0px 20px 0px;
+    margin: 30px 20px 0px 0px;
 }
 
 .types_game {
@@ -450,7 +459,7 @@ a {
     grid-template-areas: 
         "Title_Types"
         "Text_Types";
-    margin: 0px 0px 20px 20px;
+    margin: 0px 0px 20px 0px;
 }
 
 .stores {
@@ -459,7 +468,7 @@ a {
     grid-template-areas: 
         "Title_Stores"
         "Text_Stores";
-    margin: 20px 0px 20px 20px;
+    margin: 20px 0px 20px 0px;
 }
 
 .developers {
@@ -468,7 +477,7 @@ a {
     grid-template-areas: 
         "Title_Developers"
         "Text_Developers";
-    margin: 20px 0px 0px 20px;
+    margin: 20px 0px 20px 0px;
 }
 
 .title_types {
@@ -688,6 +697,10 @@ a {
 
     .description_game {
         margin: 0;
+    }
+
+    .dev_stores {
+        margin: 20px 0px 10px 0px;
     }
 
     /* Photo + Titre */

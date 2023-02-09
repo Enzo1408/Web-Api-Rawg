@@ -6,6 +6,7 @@ const wrapper_parent = document.querySelector('.wrapper');
 const wrapperGallery = document.querySelector('.wrapper-gallery');
 const wrapperPageSelector = document.querySelector('.page_select');
 const logo = document.getElementById('logo');
+const all_a = document.querySelector('.all_a');
 let wrapperGameInfoPage;
 
 
@@ -380,9 +381,12 @@ function display_games(wrapper, page) {
         gameElement.style.gridArea = `game${i+1}`;
 
         gameElement.addEventListener('click', function(){
+            window.scrollTo(0, 0);
             delete_wrapperGallery_pageSelector(wrapper_parent);
             history.pushState({ page: -1, x: 1, g: game}, '', '');
             console.log("page = -1, x = 1");
+            searchInput.value = "";
+            all_a.style.display = "none";
             display_info_game(game);
         });
 
@@ -548,16 +552,20 @@ window.addEventListener("popstate", (event) => {
     var page = event.state ? event.state.page : undefined;
     var x = event.state ? event.state.x : undefined;
     var g = event.state ? event.state.g : undefined;
-    // console.log("page = " + page + "state = " + x);
+    console.log("page = " + page + "state = " + x);
     const GamePage = document.querySelector('.wrapper_game_page');
     const gallery = document.querySelector('.wrapper-gallery');
     if (x == 1) {
-        if (GamePage){
+        if (GamePage && gallery){
             delete_wrapperGallery_pageSelector(wrapper_parent);
             delete_game_info();
             recreate_game_info(g);
         }
-        else {
+        else if (GamePage){
+            delete_game_info();
+            recreate_game_info(g);
+        }
+        else if (gallery) {
             delete_wrapperGallery_pageSelector(wrapper_parent);
             recreate_game_info(g);
         }
@@ -578,7 +586,6 @@ const options = {
     includeScore: true,
     isCaseSensitive: false,
     shouldSort: true,
-    // Search in `author` and in `tags` array
     keys: ['name']
 }
 
@@ -587,6 +594,37 @@ function doesMatch(searchTerm) {
 
     const result = fuse.search(searchTerm);
     return result;
+}
+
+let results;
+
+for (i = 0; i < 10; i++) {
+    const actual = document.getElementById(i);
+
+    actual.addEventListener("click", function() {
+        const GamePage = document.querySelector('.wrapper_game_page');
+        const gallery = document.querySelector('.wrapper-gallery');
+        let gameid = results[actual.id].refIndex;
+        const game = jsondata_games[gameid];
+        // console.log(results);
+        if (gallery) {
+            history.pushState({ page: -1, x: 1, g: game}, '', `#${game.name}`);
+            // console.log("x = " + 1 + "name = " + game.name);
+            delete_wrapperGallery_pageSelector(wrapper_parent);
+            recreate_game_info(game);
+        }
+        if (GamePage) {
+            history.pushState({ page: -1, x: 1, g: game}, '', `#${game.name}`);
+            // console.log("x = " + 1 + "name = " + game.name);
+            delete_game_info();
+            recreate_game_info(game);
+            
+        }
+        searchInput.value = "";
+        all_a.style.display = "none";
+
+        // console.log(actual.id);
+    })
 }
 
 const searchInput = document.querySelector('input[type="input"]');
@@ -598,24 +636,16 @@ searchInput.addEventListener("input", function(e) {
     // Si la valeur saisie est vide, ne rien faire
     if (!searchTerm) return;
 
-    let results = doesMatch(searchTerm);
+    results = doesMatch(searchTerm);
+    if (searchTerm.length > 1) {
+        all_a.style.display = "";
+    } 
+    else {
+        all_a.style.display = "none";
+    }
 
-    a = document.getElementsByTagName("a");
-    for (i = 0; i < a.length - 1; i++) {
+    for (i = 0; i < 10; i++) {
         const actual = document.getElementById(i);
-        actual.style.display = "none";
-        actual.style.borderBottom = "1px solid #f7f7f7";
-        actual.style.cursor = "pointer";
-        actual.style.padding = "4px 0px 4px 0px"
-        actual.addEventListener("click", function() {
-            console.log(actual.value);
-        })
-        if (searchTerm.length > 1) {
-            actual.style.display = "block";
-        } 
-        else {
-            actual.style.display = "none";
-        }
         actual.innerHTML = results[i].item.name;
     }
 });
