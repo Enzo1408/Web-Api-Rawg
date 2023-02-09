@@ -533,19 +533,15 @@ catch_list_game().then(() => {
 });
 
 
-
-
 window.addEventListener("popstate", (event) => {
     var page = event.state ? event.state.page : undefined;
     var x = event.state ? event.state.x : undefined;
     var g = event.state ? event.state.g : undefined;
     console.log("page = " + page + "state = " + x);
     const GamePage = document.querySelector('.wrapper_game_page');
-    const ButtonBack = document.querySelector('.bouton_arriere');
     const gallery = document.querySelector('.wrapper-gallery');
-    const selector = document.querySelector('.page_select');
     if (x == 1) {
-        if (GamePage && ButtonBack){
+        if (GamePage){
             delete_wrapperGallery_pageSelector(wrapper_parent);
             delete_game_info();
             recreate_game_info(g);
@@ -556,7 +552,7 @@ window.addEventListener("popstate", (event) => {
         }
     }
     if (x == 0) {
-        if (gallery && selector){
+        if (gallery){
             delete_wrapperGallery_pageSelector(wrapper_parent);
             recreate_wrapperGallery_pageSelector(page);
         }
