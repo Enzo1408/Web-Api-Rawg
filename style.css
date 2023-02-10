@@ -276,12 +276,12 @@ a {
     display: grid;
     grid-area: main;
     grid-template-columns: 50% 50%;
-    grid-template-rows: 300px 60px auto 300px;
+    grid-template-rows: 300px 60px auto auto;
     grid-template-areas: 
         "W_Title_Game W_Title_Game"
         "Platforms_Rate_Game Platforms_Rate_Game"
-        "Synopsis_Game Dev_Stores"
-        "Carroussel_Game Carroussel_Game";
+        "Carroussel_Game Carroussel_Game"
+        "Synopsis_Game Dev_Stores";
 }
 
 /* Photo + Titre */
@@ -567,6 +567,71 @@ a {
 
 .caroussel_game {
     grid-area: Carroussel_Game;
+    max-width: 1000px;
+    position: relative;
+    margin: 40px 0px 20px 0px;
+    padding: 0px 70px 0px 70px;
+}
+
+.mySlides {
+    display: none;
+}
+
+.mySlides img {
+    border-radius: 1em;
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+    background-color: #717171;
+}
+
+/* Position the "next button" to the right */
+.next {
+    right: 70px;
+    border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* Fading animation */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
 }
 
 @media (min-width: 1276px) and (max-width: 1700px) {
@@ -650,13 +715,22 @@ a {
     .wrapper_game_page_mobile {
         display: grid;
         grid-area: main;
-        grid-template-rows: 300px auto auto auto 300px;
+        grid-template-rows: 300px auto auto auto auto;
         grid-template-areas: 
             "W_Title_Game"
             "Platforms_Rate_Game"
+            "Carroussel_Game"
             "Dev_Stores"
-            "Synopsis_Game"
-            "Carroussel_Game";
+            "Synopsis_Game";
+    }
+
+    .next {
+        right: 0px;
+    }
+
+    .caroussel_game {
+        grid-area: Carroussel_Game;
+        padding: 0;
     }
 
     .platforms_rate_game {

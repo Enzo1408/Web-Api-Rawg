@@ -8,6 +8,7 @@ const wrapperPageSelector = document.querySelector('.page_select');
 const logo = document.getElementById('logo');
 const all_a = document.querySelector('.all_a');
 let wrapperGameInfoPage;
+let slideIndex = 0;
 
 
 logo.addEventListener('click', function() {
@@ -212,6 +213,24 @@ function display_text_developers(game, parent_div) {
     }
 }
 
+function display_caroussel(game, parent_div) {
+    let count = game.short_screenshots.length;
+    for (let i = 1; i < count; i++){
+        const screen = document.createElement("div");
+        screen.classList.add("mySlides");
+
+        const img = document.createElement("img");
+        img.src = game.short_screenshots[i].image;
+        img.style.width = "100%";
+
+        parent_div.appendChild(screen);
+        screen.appendChild(img);
+        
+    }
+    console.log(parent_div);
+    parent_div.innerHTML += '<a class="prev" onclick="plusSlides(-1)">&#10094;</a>';
+    parent_div.innerHTML += '<a class="next" onclick="plusSlides(1)">&#10095;</a>';
+}
 
 function display_info_game(game) {
     wrapperGameInfoPage = document.createElement("div");
@@ -318,6 +337,7 @@ function display_info_game(game) {
 
     const imagesGame = document.createElement("div");
     imagesGame.classList.add("caroussel_game");
+    display_caroussel(game, imagesGame);
 
     wrapperGameInfoPage.appendChild(wrapperTitleGame);
     wrapperGameInfoPage.appendChild(platforms_rate_game);
@@ -345,6 +365,9 @@ function display_info_game(game) {
     wrapperGameInfoPage.appendChild(imagesGame);
 
     wrapper_parent.appendChild(wrapperGameInfoPage);
+
+    slideIndex = 1;
+    showSlides(slideIndex);
 }
 
 /* function low_resolution(url) {
@@ -479,6 +502,33 @@ function display_platforms_of_one_game(game, parent_div) {
     }
 }
 
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+} 
+
+function showSlides(n) {
+    let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  /* for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  } */
+  slides[slideIndex-1].style.display = "block";
+  //dots[slideIndex-1].className += " active";
+}
+
+
 function delete_wrapperGallery_pageSelector(parent_div) {
     const wrapper_parent = document.querySelector('.wrapper');
     const gallery = document.querySelector('.wrapper-gallery');
@@ -535,7 +585,7 @@ async function catch_the_rest() {
 
 Promise.all([catch_list_first_games(), catch_infos_game()])
   .then(() => {
-    // console.log(jsondata_infos_games);
+    console.log(jsondata_infos_games);
     console.log(jsondata_games);
     history.pushState({ page: 1, x: 0 }, '', '');
     display_games(wrapperGallery, 0);
@@ -549,12 +599,24 @@ Promise.all([catch_list_first_games(), catch_infos_game()])
 
 
 window.addEventListener("popstate", (event) => {
+
+    // Récuperer les informations pousser dans l'historique du navigateur
     var page = event.state ? event.state.page : undefined;
     var x = event.state ? event.state.x : undefined;
     var g = event.state ? event.state.g : undefined;
-    console.log("page = " + page + "state = " + x);
-    const GamePage = document.querySelector('.wrapper_game_page');
+    // console.log("page = " + page + "state = " + x);
+
+    // Récuperer le bon wrapper car il y a un nom de wrapper different entre mobile et pc
+    let GamePage;
+    if (window.innerWidth < 826){
+        GamePage = document.querySelector('.wrapper_game_page_mobile');
+    }
+    else{
+        GamePage = document.querySelector('.wrapper_game_page');
+    }
     const gallery = document.querySelector('.wrapper-gallery');
+
+    // Si la page souhaité est une page d'un jeu
     if (x == 1) {
         if (GamePage && gallery){
             delete_wrapperGallery_pageSelector(wrapper_parent);
@@ -570,6 +632,8 @@ window.addEventListener("popstate", (event) => {
             recreate_game_info(g);
         }
     }
+
+    // Si la page souhaité est la page d'accueil
     if (x == 0) {
         if (gallery){
             delete_wrapperGallery_pageSelector(wrapper_parent);
@@ -602,7 +666,13 @@ for (i = 0; i < 10; i++) {
     const actual = document.getElementById(i);
 
     actual.addEventListener("click", function() {
-        const GamePage = document.querySelector('.wrapper_game_page');
+        let GamePage;
+        if (window.innerWidth < 826){
+            GamePage = document.querySelector('.wrapper_game_page_mobile');
+        }
+        else{
+            GamePage = document.querySelector('.wrapper_game_page');
+        }
         const gallery = document.querySelector('.wrapper-gallery');
         let gameid = results[actual.id].refIndex;
         const game = jsondata_games[gameid];
